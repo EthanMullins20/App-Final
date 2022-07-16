@@ -1,7 +1,8 @@
-import React from 'react';
+import {useState} from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Login from './Login.js' ;
 import Counter from './Counter.js';
 import SettingsScreen from './SettingsScreen.js';
 import Home from './Home.js';
@@ -13,6 +14,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [userName, setUserName] = useState(""); //this creates a state variable to hold the user name once logged in 
+
+  if (userLoggedIn){
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -22,7 +27,8 @@ export default function App() {
       >
         <Tab.Screen
           name='Home'
-          component={Home}
+          children={()=><Home loggedInUser={userName}/>}
+          //component={Home}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => (
@@ -53,8 +59,12 @@ export default function App() {
       </Tab.Navigator>
     </NavigationContainer>
   );
+        }else {
+return (
+  <Login setUserLoggedIn={setUserLoggedIn} setUserName={setUserName}/>
+)
 
-
+        }
 }
 
 
